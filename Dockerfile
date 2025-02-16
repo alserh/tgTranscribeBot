@@ -9,9 +9,13 @@ RUN wget https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip -O /tm
     rm /tmp/vosk-model-small-ru-0.22.zip
 
 # Stage 2: Final image
-FROM node:18.17.1-alpine3.18
-RUN apk update && \
-    apk add --no-cache ffmpeg
+FROM node:18.17.1-bullseye
+
+# Install FFmpeg using apt-get
+RUN apt-get update && \
+    apt-get install -y ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # Copy the downloaded model from the downloader stage
