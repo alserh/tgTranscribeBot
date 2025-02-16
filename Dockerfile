@@ -17,6 +17,7 @@ COPY --from=downloader /model ./res/vosk-model-small-ru-0.22
 
 # Copy package.json and install dependencies
 COPY package.json .
+RUN npm cache clean --force
 RUN npm install
 
 # Copy the rest of the application code
