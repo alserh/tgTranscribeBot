@@ -9,8 +9,21 @@ RUN wget https://alphacephei.com/vosk/models/vosk-model-small-ru-0.22.zip -O /tm
     rm /tmp/vosk-model-small-ru-0.22.zip
 
 # Stage 2: Final image
-FROM ubuntu:22.04
+FROM node:18.17.1-alpine3.18
 WORKDIR /app
+
+# Copy the downloaded model from the downloader stage
 COPY --from=downloader /model ./res/vosk-model-small-ru-0.22
+
+# Copy package.json and install dependencies
+COPY package.json .
+RUN npm install
+
+# Copy the rest of the application code
 COPY . .
-# Add other commands as needed
+
+# Expose the port
+EXPOSE 3000
+
+# Define the entry point
+ENTRYPOINT [ "node", "index.js" ]
