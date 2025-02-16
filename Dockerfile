@@ -19,7 +19,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy the downloaded model from the downloader stage
-COPY --from=downloader /model ./res/vosk-model-small-ru-0.22
+COPY --from=downloader /model ./res
 
 # Copy package.json and install dependencies
 COPY package.json .
