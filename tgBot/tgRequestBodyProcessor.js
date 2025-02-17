@@ -3,7 +3,7 @@ function tgRequestBodyProcessor(body) {
     if(body.message || body.edited_message){
         const isEdited = body.edited_message != null;
         const m = body.message ?? body.edited_message;
-        const entities = body.message.entities ?? [] 
+        const entities = m.entities ?? [] 
         const chat = m.chat ?? []
         // console.log(m);
         // if(m === undefined) throw new Error("No message in telegram response!");
