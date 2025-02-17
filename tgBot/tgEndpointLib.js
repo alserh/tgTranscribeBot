@@ -22,6 +22,22 @@ module.exports = {
         }
     },
 
+    async tgSendPhoto(mediaPath, chat_id) {
+        try {
+            let headers = {
+                "content-type": "application/json"
+            };
+            let body = {
+                "chat_id": chat_id,
+                "photo": mediaPath
+            };
+            let res = await tgSendRequest("sendPhoto", "POST", headers, body);
+            return res;
+        } catch (e) {
+            console.error(`Error sending media message: ${e}`);
+        }
+    },
+
     async getFile(file) {
         const request = "getFile?file_id=" + file.file_id;
         let res = await tgSendRequest(request);
