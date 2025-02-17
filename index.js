@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const { tgRequestBodyProcessor } = require("./tgBot/tgRequestBodyProcessor");
 // const { tgPostMessage } = require("./tgBot/tgEndpointLib");
 const { tgFileOperator } = require("./fileProcessor/tgFileOperator");
-
+const { processMeme } = require("./memeProcessor/processMeme")
 
 const app = express();
 const port = process.env.INBOUND_PORT;
@@ -32,11 +32,20 @@ app.post("/telegram", async (req, res) => {
         // Array to hold all asynchronous operations
         const operations = [];
 
-        if(tgMessage?.entities?.some(item => item.type === 'bot_command') && tgMessage.file?.mime_type === "audio/ogg"){
-            operations.push(tgFileOperator(tgMessage));
+        if (tgMessage?.entities?.some(item => item.type === 'bot_command')) {
+            switch (tgMessage.text.split('@')[0]) {
+                case '/trans':
+                    operations.push(tgFileOperator(tgMessage))
+                    break
+                case '/mem_suda':
+                    operations.push(processMeme(tgMessage))
+                    break
+                default:
+                    break;
+            }
         }
 
-        // await Promise.all(operations);
+        await Promise.all(operations);
 
         res.json({ status: 200, result: "All operations processed successfully" });
 
